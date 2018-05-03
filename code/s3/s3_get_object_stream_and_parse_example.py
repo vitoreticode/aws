@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+"""Module to get a s3 StreamingBody and save in a file on disk
+"""
+
 import boto3
 import json
 from pprint import pprint as pp
@@ -26,7 +29,7 @@ client = boto3.client('s3')
 bucket="bucket-name"
 key="key-name"
 
-# male the request of the object
+# make the request of the object
 file = client.get_object(Bucket=bucket,Key=key)
 
 # decode the requested streaming object to string with windows charset
