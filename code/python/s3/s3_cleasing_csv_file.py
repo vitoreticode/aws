@@ -60,7 +60,9 @@ def main(event, context):
     print("Context : " + str(context))
 
     bucket = event['Records'][0]['s3']['bucket']['name']
-    key = event['Records'][0]['s3']['object']['key']
+    key_source = event['Records'][0]['s3']['object']['key']
+
+    key = "/".join(key_source.split("/")[:-1]) + "/processed/" + key_source.split("/")[-1]
 
     logger.info('Downloading file on: {0}/{1}'.format(bucket,key))
     file_metadata = s3_download(bucket, key)
@@ -74,8 +76,8 @@ def main(event, context):
         # Replace the target string
         filedata = filedata.replace('""', '"')
         filedata = filedata.replace('","', ',')
-        filedata = filedata.replace('$data', 'data')
-        filedata = filedata.replace('$iod', 'iod')
+        filedata = filedata.replace("$data", "data")
+        filedata = filedata.replace("$iod", "iod")
 
     # Write the file out again
     with open(file_location, 'w') as file:
